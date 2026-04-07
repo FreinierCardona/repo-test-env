@@ -1,1 +1,13 @@
-databaseChangelog:
+databaseChangeLog:
+  - changeSet:
+      id: 0001
+      author: Freinier
+      labels: HU-02
+      comment: Create table person
+      changes:
+        - sqlFile:
+            path: 01_tables/0001_create_table_person.sql
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: 11_rollbacks/01_tables/0001_create_table_person.sql
