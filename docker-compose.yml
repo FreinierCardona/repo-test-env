@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres_liquibase:
+    image: postgres:15
+    container_name: postgres_liquibase
+    restart: always
+    environment:
+      POSTGRES_DB: liquibase_db
+      POSTGRES_USER: liquibase_user
+      POSTGRES_PASSWORD: liquibase_pass
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata_liquibase:/var/lib/postgresql/data
+
+  liquibase:
+    image: liquibase/liquibase:latest
+    container_name: liquibase_runner
+    depends_on:
+      - postgres_liquibase
+    volumes:
+      - .:/liquibase/changelog
+      - ./drivers:/liquibase/changelog/drivers 
+    working_dir: /liquibase/changelog
+    command: tail -f /dev/null
+
+volumes:
+  pgdata_liquibase:
